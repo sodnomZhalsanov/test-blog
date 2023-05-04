@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'lastname' => $_POST['lastName'],
             'email' => $_POST['email'],
             'cellphone' => $_POST['phoneNumber'],
-            'password' => $_POST["pass"]
+            'password' => password_hash($_POST["pass"], PASSWORD_DEFAULT)
         ]);
     }
 

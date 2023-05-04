@@ -76,8 +76,8 @@ function validateEmail(string $email, PDO $connect): array {
     }
 
 
-    $query = $connect->prepare("select email from users where email = :log");
-    $query->execute(['log' => $email]);
+    $query = $connect->prepare("select email from users where email = :email");
+    $query->execute(['email' => $email]);
     $value = $query->fetch(PDO::FETCH_COLUMN);
 
     if (!empty($value)) {

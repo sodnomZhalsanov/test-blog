@@ -1,4 +1,5 @@
 <?php
+session_start();
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -6,39 +7,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = validateUser($_POST, $connect);
 
     if(empty($errors)){
-        header("Location: ./views/main.php");
+        $query = $connect->prepare("select firstName,password,id from users where email = :email");
+        $query->execute(['email' => $_POST['email']]);
+        $result = $query->fetch();
+
+
+        if (!empty($result) and password_verify($_POST['pass'],$result['password'])){
+            $_SESSION['userId'] = $result['id'];
+            $_SESSION['userName'] = $result['firstName'];
+
+            header("Location: /main");
+        } else {
+            $errors['log_error'] = "Your email or password is invalid, please try again";
+
+        }
+
     }
 }
+
+
 function validateUser(array $data, PDO $connect): array {
-        $errors = [];
-        $email = $data["email"] ?? null;
-        $pass = $data["pass"] ?? null;
-        $hash = password_hash($pass, PASSWORD_DEFAULT);
+    $errors = [];
+    $email = $data["email"] ?? null;
+    $pass = $data["pass"] ?? null;
 
-        $errors += validatePasswordUser($pass, $hash);
-        $errors += validateEmailUser($email, $connect);
 
-        return $errors;
+    $errors += validatePasswordUser($pass);
+    $errors += validateEmailUser($email, $connect);
+
+    return $errors;
 
     }
 
-function validatePasswordUser(string $pass, string $hash): array {
+function validatePasswordUser(string $pass): array {
     $err = [];
 
     if(empty($pass)){
         $err['pass'] = "Please, enter your password";
         return $err;
     }
-
-
-
-    if (!password_verify($pass, $hash)) {
-        $err['password'] = "Your password is invalid, please enter correct password";
-        return $err;
-    }
-
-
-
 
     return $err;
 }
@@ -52,15 +59,7 @@ function validateEmailUser(string $email, PDO $connect): array {
     }
 
 
-    $query = $connect->prepare("select email from users where email = :email");
-    $query->execute(['email' => $email]);
-    $value = $query->fetch(PDO::FETCH_COLUMN);
-
-    if (empty($value)) {
-        $err['email'] = "Your email is invalid, please enter correct email";
-        return $err;
-    }
-
     return $err;
 
 }
+require_once "../forms/signin.phtml";

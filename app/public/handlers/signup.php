@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 }
+
 function validate(array $data, PDO $connect): array {
     $errors = [];
     $email = $data["email"] ?? null;
@@ -87,3 +88,4 @@ function validateEmail(string $email, PDO $connect): array {
     return $err;
 
 }
+require_once "../forms/signup.phtml";

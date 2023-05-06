@@ -1,7 +1,14 @@
 <?php
 session_start();
 if (isset($_SESSION['userId'])) {
-    echo "Welcome, {$_SESSION['userName']}!";
+    $greetings =  "Welcome, {$_SESSION['userName']}!";
+    return [
+        "./views/main.phtml",
+        [
+            'userGreetings' => $greetings
+        ]
+    ];
 } else {
     header("Location: /signin");
 }
+

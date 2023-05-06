@@ -1,5 +1,6 @@
 <?php
 $errors = [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $connect = new PDO("pgsql:host=db;dbname=dbname", "dbuser", "dbpwd");
@@ -18,6 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 }
+
+
+
+return [
+    "./forms/signup.phtml",
+    [
+        'errors' => $errors
+    ]
+];
 
 function validate(array $data, PDO $connect): array {
     $errors = [];
@@ -88,4 +98,3 @@ function validateEmail(string $email, PDO $connect): array {
     return $err;
 
 }
-require_once "../forms/signup.phtml";

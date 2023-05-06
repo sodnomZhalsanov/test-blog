@@ -1,20 +1,22 @@
 <?php
 session_start();
 $errors = [];
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $connect = new PDO("pgsql:host=db;dbname=dbname", "dbuser", "dbpwd");
     $errors = validateUser($_POST, $connect);
 
     if(empty($errors)){
-        $query = $connect->prepare("select firstName,password,id from users where email = :email");
+        $query = $connect->prepare("select firstname, password, id from users where email = :email");
         $query->execute(['email' => $_POST['email']]);
         $result = $query->fetch();
 
 
         if (!empty($result) and password_verify($_POST['pass'],$result['password'])){
             $_SESSION['userId'] = $result['id'];
-            $_SESSION['userName'] = $result['firstName'];
+            $_SESSION['userName'] = $result['firstname'];
 
             header("Location: /main");
         } else {
@@ -25,6 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+return [
+    './forms/signin.phtml',
+    [
+        'errors' => $errors,
+    ]
+    ];
 
 function validateUser(array $data, PDO $connect): array {
     $errors = [];
@@ -62,4 +70,3 @@ function validateEmailUser(string $email, PDO $connect): array {
     return $err;
 
 }
-require_once "../forms/signin.phtml";

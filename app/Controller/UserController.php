@@ -1,20 +1,29 @@
 <?php
-namespace App\handlers;
+namespace App\Controller;
+use App\PDOconnection;
 use PDO;
 
-class UserController
+class UserController implements PDOconnection
 {
+    private PDO $connect;
 
-    public static function signUp(): array {
+    public function setConnection(PDO $connection): void
+    {
+        // TODO: Implement setConnection() method.
+
+        $this->connect = $connection;
+    }
+
+    public function signUp(): array {
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $connect = new PDO("pgsql:host=db;dbname=dbname", "dbuser", "dbpwd");
-            $errors = validate($_POST , $connect);
+
+            $errors = $this->validate($_POST , $this->connect);
 
             if (empty($errors)){
-                $sth = $connect->prepare("INSERT INTO users (firstname, lastname,email,cellphone,password) 
+                $sth = $this->connect->prepare("INSERT INTO users (firstname, lastname,email,cellphone,password) 
         VALUES(:firstname,:lastname,:email,:cellphone,:password)");
                 $sth->execute([
                     'firstname' => $_POST['firstName'],
@@ -45,11 +54,11 @@ class UserController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $connect = new PDO("pgsql:host=db;dbname=dbname", "dbuser", "dbpwd");
-            $errors = $this->validateUser($_POST, $connect);
+
+            $errors = $this->validateUser($_POST, $this->connect);
 
             if(empty($errors)){
-                $query = $connect->prepare("select firstname, password, id from users where email = :email");
+                $query = $this->connect->prepare("select firstname, password, id from users where email = :email");
                 $query->execute(['email' => $_POST['email']]);
                 $result = $query->fetch();
 
@@ -75,7 +84,7 @@ class UserController
         ];
     }
 
-    public static function getMain(): array {
+    public function getMain(): array {
         session_start();
         if (!isset($_SESSION['userId'])) {
 
@@ -92,7 +101,7 @@ class UserController
 
     }
 
-    public static function getNotFound(): array {
+    public function getNotFound(): array {
         return [
             "./views/NotFound.phtml",
             [
@@ -143,7 +152,7 @@ class UserController
         $errors = [];
         $email = $data["email"] ?? null;
         $pass = $data["pass"] ?? null;
-        $firstName = $data["firstName"] ?? null;;
+        $firstName = $data["firstName"] ?? null;
         $lastName = $data["lastName"] ?? null;
 
 

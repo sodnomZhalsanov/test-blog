@@ -1,19 +1,19 @@
 <?php
 namespace App;
-
+use PDO;
 class App
 {
     private array $routes = [
         'GET' => [
-            "/signin" => [ handlers\UserController:: class, 'signIn'],
-            "/main" => [ handlers\UserController:: class, 'getMain'],
-            '/signup' => [ handlers\UserController:: class, 'signUp'],
-            "/NotFound" => [handlers\UserController:: class, 'getNotFound']
+            "/signin" => [ \App\Controller\UserController:: class, 'signIn'],
+            "/main" => [  \App\Controller\UserController:: class, 'getMain'],
+            '/signup' => [  \App\Controller\UserController:: class, 'signUp'],
+            "/NotFound" => [ \App\Controller\UserController:: class, 'getNotFound']
 
         ],
         'POST' => [
-            '/signin' => [ handlers\UserController:: class, 'signIn'],
-            '/signup' => [ handlers\UserController:: class, 'signUp']
+            '/signin' => [  \App\Controller\UserController:: class, 'signIn'],
+            '/signup' => [  \App\Controller\UserController:: class, 'signUp']
 
 
         ]
@@ -23,11 +23,19 @@ class App
 
         $handler = $this->route();
 
-        list($obj, $method) = $handler;
-        if(!is_object($obj)){
-            $obj = new $obj();
+        if(is_array($handler)){
+            list($obj, $method) = $handler;
+            if(!is_object($obj)){
+                $obj = new $obj();
+                if ($obj instanceof PDOconnection){
+                    $obj->setConnection(new PDO("pgsql:host=db;dbname=dbname", "dbuser", "dbpwd"));
+                }
+            }
+            $response = $obj->$method();
+
+        } else{
+            $response = $handler();
         }
-        $response = $obj->$method();
 
         list($view,$params) = $response;
         extract($params);
@@ -45,7 +53,7 @@ class App
         echo $result;
     }
 
-    private function route(): array {
+    private function route(): array|callable {
         $uri = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
 
@@ -56,19 +64,25 @@ class App
             }
         }
 
-        return [handlers\UserController:: class, 'getNotFound'];
+        return [ \App\Controller\UserController:: class, 'getNotFound'];
 
     }
 
-    public function addRoute(string $route, string $handlerPath, string $method): void {
-        $this->routes[$method][$route] = $handlerPath;
+
+    public function get(string $route, array|callable $handler): void {
+        $this->routes['GET'][$route] = $handler;
+    }
+
+    public function post(string $route, array|callable $handler): void {
+        $this->routes['POST'][$route] = $handler;
+
     }
 
     /*   private function doRouting(string $uri): string {
        if(preg_match("#/(?<route>[A-Za-z0-9-_]+)#", $uri, $matches ) and
-           file_exists("./handlers/{$matches['route']}.php")) {
+           file_exists("./Controller/{$matches['route']}.php")) {
 
-           return "./handlers/{$matches['route']}.php";
+           return "./Controller/{$matches['route']}.php";
 
        }
 

@@ -1,24 +1,14 @@
 <?php
 
-spl_autoload_register(function ($class) {
-     $appRoot = dirname(__DIR__);
-
-     $file = str_replace("\\", DIRECTORY_SEPARATOR, $class).".php";
-
-     $file = preg_replace('#^App#', $appRoot, $file );
-
-     if (file_exists($file)) {
-          require $file;
-          return true;
-     }
-
-     return false;
-
-});
+require_once '../Autoloader.php';
+$appRoot = dirname(__DIR__);
+\App\Autoloader::register($appRoot);
 
 use App\App;
 
 $app = new App();
+
+$app->get('/random', function () { return ['./views/layout.html', [] ]; } );
 
 $app->run();
 

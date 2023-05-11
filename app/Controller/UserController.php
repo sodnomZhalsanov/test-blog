@@ -1,18 +1,20 @@
 <?php
 namespace App\Controller;
-use App\PDOconnection;
-use PDO;
 
-class UserController implements PDOconnection
+use App\Repository\UserRepository;
+
+
+class UserController
 {
-    private PDO $connect;
 
-    public function setConnection(PDO $connection): void
+    private UserRepository $userRepos;
+
+    public function __construct(UserRepository $userRepos)
     {
-        // TODO: Implement setConnection() method.
-
-        $this->connect = $connection;
+        $this->userRepos = $userRepos;
     }
+
+
 
     public function signUp(): array {
         $errors = [];
@@ -20,18 +22,10 @@ class UserController implements PDOconnection
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
-            $errors = $this->validate($_POST , $this->connect);
+            $errors = $this->validate($_POST);
 
             if (empty($errors)){
-                $sth = $this->connect->prepare("INSERT INTO users (firstname, lastname,email,cellphone,password) 
-        VALUES(:firstname,:lastname,:email,:cellphone,:password)");
-                $sth->execute([
-                    'firstname' => $_POST['firstName'],
-                    'lastname' => $_POST['lastName'],
-                    'email' => $_POST['email'],
-                    'cellphone' => $_POST['phoneNumber'],
-                    'password' => password_hash($_POST["pass"], PASSWORD_DEFAULT)
-                ]);
+                $this->userRepos->create($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['pass'], $_POST['phoneNumber'] );
             }
 
         }
@@ -55,12 +49,10 @@ class UserController implements PDOconnection
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
-            $errors = $this->validateUser($_POST, $this->connect);
+            $errors = $this->validateUser($_POST);
 
             if(empty($errors)){
-                $query = $this->connect->prepare("select firstname, password, id from users where email = :email");
-                $query->execute(['email' => $_POST['email']]);
-                $result = $query->fetch();
+                $result = $this->userRepos->getByEmail($_POST);
 
 
                 if (!empty($result) and password_verify($_POST['pass'],$result['password'])){
@@ -111,14 +103,14 @@ class UserController implements PDOconnection
         ];
     }
 
-    private function validateUser(array $data, PDO $connect): array {
+    private function validateUser(array $data): array {
         $errors = [];
         $email = $data["email"] ?? null;
         $pass = $data["pass"] ?? null;
 
 
         $errors += $this->validatePasswordUser($pass);
-        $errors += $this->validateEmailUser($email, $connect);
+        $errors += $this->validateEmailUser($email);
 
         return $errors;
 
@@ -135,7 +127,7 @@ class UserController implements PDOconnection
         return $err;
     }
 
-    private function validateEmailUser(string $email, PDO $connect): array {
+    private function validateEmailUser(string $email): array {
         $err = [];
 
         if (empty($email)) {
@@ -148,7 +140,7 @@ class UserController implements PDOconnection
 
     }
 
-    private function validate(array $data, PDO $connect): array {
+    private function validate(array $data): array {
         $errors = [];
         $email = $data["email"] ?? null;
         $pass = $data["pass"] ?? null;
@@ -159,7 +151,7 @@ class UserController implements PDOconnection
         $errors += $this->validateFirstName($firstName);
         $errors += $this->validateLastName($lastName);
         $errors += $this->validatePassword($pass);
-        $errors += $this->validateEmail($email, $connect);
+        $errors += $this->validateEmail($email);
 
         return $errors;
 
@@ -196,7 +188,7 @@ class UserController implements PDOconnection
         return $err;
     }
 
-    private function validateEmail(string $email, PDO $connect): array {
+    private function validateEmail(string $email): array {
         $err = [];
 
         if (empty($email)) {
@@ -205,9 +197,7 @@ class UserController implements PDOconnection
         }
 
 
-        $query = $connect->prepare("select email from users where email = :email");
-        $query->execute(['email' => $email]);
-        $value = $query->fetch(PDO::FETCH_COLUMN);
+        $value = $this->userRepos->getByEmail($_POST);
 
         if (!empty($value)) {
             $err['email'] = "Email is already used";

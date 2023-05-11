@@ -1,6 +1,6 @@
 <?php
 namespace App;
-use PDO;
+
 class App
 {
     private array $routes = [
@@ -19,6 +19,14 @@ class App
         ]
     ];
 
+    private Container $container;
+
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+
+    }
+
     public function run(): void {
 
         $handler = $this->route();
@@ -26,10 +34,7 @@ class App
         if(is_array($handler)){
             list($obj, $method) = $handler;
             if(!is_object($obj)){
-                $obj = new $obj();
-                if ($obj instanceof PDOconnection){
-                    $obj->setConnection(new PDO("pgsql:host=db;dbname=dbname", "dbuser", "dbpwd"));
-                }
+                $obj = $this->container->get($obj);
             }
             $response = $obj->$method();
 

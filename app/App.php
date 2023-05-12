@@ -8,15 +8,10 @@ class App
     private array $routes = [
         'GET' => [
             "/signin" => [ \App\Controller\UserController:: class, 'signIn'],
-            "/main" => [  \App\Controller\UserController:: class, 'getMain'],
-            '/signup' => [  \App\Controller\UserController:: class, 'signUp'],
             "/NotFound" => [ \App\Controller\UserController:: class, 'getNotFound']
 
         ],
         'POST' => [
-            '/signin' => [  \App\Controller\UserController:: class, 'signIn'],
-            '/signup' => [  \App\Controller\UserController:: class, 'signUp']
-
 
         ]
     ];
@@ -62,11 +57,17 @@ class App
         ob_get_clean();
 
         echo $result;
+
     } catch (\Throwable $e) {
 
-           $message = "{$e->getMessage()} in {$e->getFile()} on {$e->getLine()}";
+           $message = "'{$e->getMessage()} in {$e->getFile()} on {$e->getLine()} line' ";
 
-           file_put_contents(__DIR__."/log.txt", $message . PHP_EOL, FILE_APPEND);
+           $logger = $this->container->get(LoggerInterface::class);
+
+           $logger->error($message);
+
+           require_once "./public/views/NotFound.phtml";
+
 
         }
 }

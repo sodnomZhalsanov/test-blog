@@ -23,6 +23,10 @@ $container->set(UserRepository::class, function () {
     return $obj;
 });
 
+$container->set(\App\LoggerInterface::class, function (){
+    return new \App\Logger();
+});
+
 $app = new App($container);
 $app->get("/ggg", ['fdfvxc', 'getFarm']);
 

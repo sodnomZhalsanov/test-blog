@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use App\Exception\ContainerException;
+
 class App
 {
     private array $routes = [
@@ -34,7 +36,13 @@ class App
         if(is_array($handler)){
             list($obj, $method) = $handler;
             if(!is_object($obj)){
-                $obj = $this->container->get($obj);
+                try {
+                    $obj = $this->container->get($obj);
+                } catch (\Throwable $container) {
+
+                    echo "class doesn't exist";
+                }
+
             }
             $response = $obj->$method();
 

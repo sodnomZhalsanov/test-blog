@@ -24,6 +24,7 @@ $container->set(UserRepository::class, function () {
 });
 
 $app = new App($container);
+$app->get("/ggg", ['fdfvxc', 'getFarm']);
 
 $app->run();
 

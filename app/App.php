@@ -30,18 +30,16 @@ class App
     }
 
     public function run(): void {
+        try {
 
         $handler = $this->route();
 
         if(is_array($handler)){
             list($obj, $method) = $handler;
             if(!is_object($obj)){
-                try {
-                    $obj = $this->container->get($obj);
-                } catch (\Throwable $container) {
 
-                    echo "class doesn't exist";
-                }
+                    $obj = $this->container->get($obj);
+
 
             }
             $response = $obj->$method();
@@ -64,7 +62,14 @@ class App
         ob_get_clean();
 
         echo $result;
-    }
+    } catch (\Throwable $e) {
+
+           $message = "{$e->getMessage()} in {$e->getFile()} on {$e->getLine()}";
+
+           file_put_contents(__DIR__."/log.txt", $message . PHP_EOL, FILE_APPEND);
+
+        }
+}
 
     private function route(): array|callable {
         $uri = $_SERVER['REQUEST_URI'];

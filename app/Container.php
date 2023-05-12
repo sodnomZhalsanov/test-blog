@@ -18,7 +18,7 @@ class Container
             if (class_exists($name)) {
                 return new $name();
             }
-            throw new ContainerException();
+            throw new ContainerException("Class { $name } doesn't exist");
         }
 
         $callback = $this->services[$name];

@@ -1,3 +1,0 @@
-Cannot use object of type App\Entity\User as array in /var/www/html/app/Controller/UserController.php on 58
-Class doesn't exist in /var/www/html/app/Container.php on 21
-Class { fdfvxc } doesn't exist in /var/www/html/app/Container.php on 21

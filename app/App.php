@@ -7,8 +7,7 @@ class App
 {
     private array $routes = [
         'GET' => [
-            "/signin" => [ \App\Controller\UserController:: class, 'signIn'],
-            "/NotFound" => [ \App\Controller\UserController:: class, 'getNotFound']
+
 
         ],
         'POST' => [
@@ -59,14 +58,16 @@ class App
         echo $result;
 
     } catch (\Throwable $e) {
-
-           $message = "'{$e->getMessage()} in {$e->getFile()} on {$e->getLine()} line' ";
-
            $logger = $this->container->get(LoggerInterface::class);
 
-           $logger->error($message);
+           $context = [
+               'exception' => $e->getMessage(),
+               'file' => $e->getFile(),
+               'line' => $e->getLine()
+           ];
 
-           require_once "./public/views/NotFound.phtml";
+           $logger->error('Unsuccessful query processing', $context);
+
 
 
         }

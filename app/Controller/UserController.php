@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Repository\UserRepository;
+use App\Entity\User;
 
 
 class UserController
@@ -25,7 +26,8 @@ class UserController
             $errors = $this->validate($_POST);
 
             if (empty($errors)){
-                $this->userRepos->create($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['pass'], $_POST['phoneNumber'] );
+                $user = new User($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['pass'], $_POST['phoneNumber'] );
+                $this->userRepos->create($user);
             }
 
         }
@@ -52,12 +54,12 @@ class UserController
             $errors = $this->validateUser($_POST);
 
             if(empty($errors)){
-                $result = $this->userRepos->getByEmail($_POST);
+                $user = $this->userRepos->getByEmail($_POST);
 
 
-                if (!empty($result) and password_verify($_POST['pass'],$result['password'])){
-                    $_SESSION['userId'] = $result['id'];
-                    $_SESSION['userName'] = $result['firstname'];
+                if (!empty($user) and password_verify($_POST['pass'],$user->getPassword())){
+                    $_SESSION['userId'] = $user->getId();
+                    $_SESSION['userName'] = $user->getFirstname();
 
                     header("Location: /main");
                 } else {

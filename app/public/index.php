@@ -7,28 +7,21 @@ $appRoot = dirname(__DIR__);
 use App\App;
 use App\Repository\UserRepository;
 
-$container = new \App\Container();
 
-$container->set(\App\Controller\UserController::class, function (\App\Container $container) {
-    $userRepos = $container->get(UserRepository::class);
+$dependencies = include "../Config/dependencies.php";
+$settings = include "../Config/settings.php";
+$data = array_merge($settings,$dependencies);
 
-    $obj = new \App\Controller\UserController($userRepos);
-
-    return $obj;
-});
-
-$container->set(UserRepository::class, function () {
-    $obj = new UserRepository(new PDO("pgsql:host=db;dbname=dbname", "dbuser", "dbpwd"));
-
-    return $obj;
-});
-
-$container->set(\App\LoggerInterface::class, function (){
-    return new \App\Logger();
-});
+$container = new \App\Container($data);
 
 $app = new App($container);
+$app->get("/signup", [\App\Controller\UserController::class, 'signUp']);
+$app->get("/main", [\App\Controller\UserController::class, 'getMain']);
+$app->get("/signin", [\App\Controller\UserController::class, 'signIn']);
+$app->get("/NotFound", [\App\Controller\UserController::class, 'getNotFound']);
 $app->get("/ggg", ['fdfvxc', 'getFarm']);
+$app->post("/signup", [\App\Controller\UserController::class, 'signUp']);
+$app->post("/signin", [\App\Controller\UserController::class, 'signIn']);
 
 $app->run();
 

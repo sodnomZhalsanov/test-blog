@@ -15,16 +15,16 @@ class UserRepository
     }
 
 
-    public function create(string $firstname, string $lastname, string $email, string $pass, ?int $cellphone): void
+    public function create(User $user): void
     {
         $sth = $this->connection->prepare("INSERT INTO users (firstname, lastname,email,cellphone,password) 
         VALUES(:firstname,:lastname,:email,:cellphone,:password)");
         $sth->execute([
-            'firstname' => $firstname,
-            'lastname' => $lastname,
-            'email' =>  $email,
-            'cellphone' => $cellphone,
-            'password' => password_hash($pass, PASSWORD_DEFAULT)
+            'firstname' => $user->getFirstname(),
+            'lastname' => $user->getLastname(),
+            'email' =>  $user->getEmail(),
+            'cellphone' => $user->getPhoneNumber(),
+            'password' => password_hash($user->getPassword(), PASSWORD_DEFAULT)
         ]);
 
 
@@ -38,13 +38,13 @@ class UserRepository
 
         if (!empty($result)) {
             $user = new User(
-                $result['id'],
                 $result['firstname'],
                 $result['lastname'],
                 $result['email'],
                 $result['password'],
                 $result['cellphone']
             );
+            $user->setId($result['id']);
             return $user;
         }
 

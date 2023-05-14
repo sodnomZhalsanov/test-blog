@@ -15,23 +15,32 @@ class CardRepository
 
     }
 
-    public function getCardByName($name): Card|bool
+    public function getCardById(array $data): Card|bool
     {
-        $query = $this->connection->prepare("select * from cards where name = :name");
-        $query->execute(['name' => $name]);
+        $query = $this->connection->prepare("select * from cards where id = :id");
+        $query->execute(['id' => $data['id']]);
         $result = $query->fetch();
 
         if (!empty($result)) {
             $card = new Card(
-                $result['id'],
                 $result['name'],
                 $result['category'],
                 $result['price']
             );
+            $card->setId($data['id']);
 
             return $card;
         }
         return false;
+    }
+
+    public function getAllCards(): ?array
+    {
+        $query = $this->connection->prepare("select * from cards");
+        $query->execute();
+        $result = $query->fetchAll();
+
+        return $result;
     }
 
 }

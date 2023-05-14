@@ -50,7 +50,7 @@ class App
 
         include $view;
         $content = ob_get_contents();
-        $layout = file_get_contents('./views/layout.html');
+        $layout = file_get_contents('../View/layout.html');
         $result = str_replace('{content}', $content, $layout);
 
         ob_get_clean();
@@ -67,6 +67,8 @@ class App
            ];
 
            $logger->error('Unsuccessful query processing', $context);
+
+           require_once "../View/NotFound.phtml";
 
 
 
@@ -106,7 +108,7 @@ class App
 
        }
 
-       return "./views/NotFound.phtml";
+       return "./View/NotFound.phtml";
 
    }
 */

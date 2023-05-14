@@ -35,7 +35,7 @@ class UserController
 
 
         return [
-            "./forms/signup.phtml",
+            "../View/forms/signup.phtml",
             [
                 'errors' => $errors
             ]
@@ -61,7 +61,7 @@ class UserController
                     $_SESSION['userId'] = $user->getId();
                     $_SESSION['userName'] = $user->getFirstname();
 
-                    header("Location: /main");
+                    header("Location: /catalog");
                 } else {
                     $errors['log_error'] = "Your email or password is invalid, please try again";
 
@@ -71,7 +71,7 @@ class UserController
         }
 
         return [
-            './forms/signin.phtml',
+            '../View/forms/signin.phtml',
             [
                 'errors' => $errors,
             ]
@@ -87,7 +87,7 @@ class UserController
 
         $greetings =  "Welcome, {$_SESSION['userName']}!";
         return [
-            "./views/main.phtml",
+            "../View/main.phtml",
             [
                 'userGreetings' => $greetings
             ]
@@ -97,7 +97,7 @@ class UserController
 
     public function getNotFound(): array {
         return [
-            "./views/NotFound.phtml",
+            "../View/NotFound.phtml",
             [
 
             ]

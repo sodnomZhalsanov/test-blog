@@ -5,7 +5,7 @@ $appRoot = dirname(__DIR__);
 \App\Autoloader::register($appRoot);
 
 use App\App;
-use App\Repository\UserRepository;
+
 
 
 $dependencies = include "../Config/dependencies.php";
@@ -22,6 +22,7 @@ $app->get("/NotFound", [\App\Controller\UserController::class, 'getNotFound']);
 $app->get("/ggg", ['fdfvxc', 'getFarm']);
 $app->post("/signup", [\App\Controller\UserController::class, 'signUp']);
 $app->post("/signin", [\App\Controller\UserController::class, 'signIn']);
+$app->get("/catalog", [\App\Controller\CardController::class, 'getCatalog']);
 
 $app->run();
 

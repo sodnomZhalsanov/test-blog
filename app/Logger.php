@@ -7,9 +7,10 @@ class Logger implements LoggerInterface
     public function error(string $message, array $context)
     {
         // TODO: Implement error() method.
+        $mes = "{$message}. {$context['exception']} in {$context['file'] } on {$context['line']} line.";
 
-        file_put_contents(__DIR__."/Log/error.php", $message . PHP_EOL, FILE_APPEND);
-        file_put_contents(__DIR__."/Log/error.php", $context['exception' ] . PHP_EOL, FILE_APPEND);
+        file_put_contents(__DIR__."/Log/error.php", $mes . PHP_EOL, FILE_APPEND);
+
     }
 
     public function debug(string $message, array $context)

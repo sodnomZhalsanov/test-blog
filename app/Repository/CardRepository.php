@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use PDO;
 use App\Entity\Card;
+use App\Entity\Category;
 
 class CardRepository
 {
@@ -25,7 +26,8 @@ class CardRepository
             $card = new Card(
                 $result['name'],
                 $result['category'],
-                $result['price']
+                $result['price'],
+                $result['image']
             );
             $card->setId($data['id']);
 
@@ -36,11 +38,50 @@ class CardRepository
 
     public function getAllCards(): ?array
     {
-        $query = $this->connection->prepare("select * from cards");
-        $query->execute();
+        $cards = [];
+        $query = $this->connection->query("select * from cards");
         $result = $query->fetchAll();
 
-        return $result;
+
+
+        foreach ($result as $elem) {
+            $card = new Card($elem['name'], $elem['price'], $elem['category'], $elem['image']);
+            $card->setId($elem['id']);
+
+            $cards[] = $card;
+        }
+
+
+
+        return $cards;
     }
+    public function getAllCategories(): array
+    {
+        $categories = [];
+
+        $query = $this->connection->query("select * from categories");
+        $result = $query->fetchAll();
+
+
+
+
+        foreach ($result as $elem) {
+            $category = new Category($elem['name']);
+            $category->setId($elem['id']);
+
+            $categories[] = $category;
+        }
+
+
+
+        return $categories;
+    }
+
+    public function getByCategory(string $name)
+    {
+
+
+    }
+
 
 }

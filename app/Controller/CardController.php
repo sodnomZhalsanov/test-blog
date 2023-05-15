@@ -29,13 +29,16 @@ class CardController
         }
 
         $cards = $this->cardRepos->getAllCards();
+        $categories = $this->cardRepos->getAllCategories();
 
         $greetings =  "Welcome, {$_SESSION['userName']}!";
         return [
             "../View/catalog.phtml",
             [
                 'userGreetings' => $greetings,
-                'cards' => $cards
+                'cards' => $cards,
+                'categories' => $categories
+
             ]
         ];
     }

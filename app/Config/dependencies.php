@@ -7,6 +7,9 @@ use App\LoggerInterface;
 use App\Repository\UserRepository;
 use App\Controller\CardController;
 use App\Repository\CardRepository;
+use App\Controller\CategoryController;
+use App\Repository\CategoryRepository;
+
 
 return [
     UserRepository::class => function (Container $container) {
@@ -53,6 +56,22 @@ return [
       $repos = $container->get(CardRepository::class);
 
       $obj = new CardController($repos);
+
+      return $obj;
+    },
+
+    CategoryRepository::class => function(Container $container) {
+      $pdo = $container->get('db');
+
+      $obj = new CategoryRepository($pdo);
+
+      return $obj;
+    },
+
+    CategoryController::class => function (Container $container) {
+      $repos = $container->get(CategoryRepository::class);
+
+      $obj = new CategoryController($repos);
 
       return $obj;
     }

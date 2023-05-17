@@ -22,7 +22,8 @@ $app->get("/NotFound", [\App\Controller\UserController::class, 'getNotFound']);
 $app->get("/ggg", ['fdfvxc', 'getFarm']);
 $app->post("/signup", [\App\Controller\UserController::class, 'signUp']);
 $app->post("/signin", [\App\Controller\UserController::class, 'signIn']);
-$app->get('/catalog', [\App\Controller\CategoryContoller::class, 'getCatalog']);
+$app->get('/catalog', [\App\Controller\CategoryController::class, 'getCatalog']);
+$app->get('/catalog/\b(?<categoryId>[0-9])\b', [\App\Controller\CardController::class, 'getCards']);
 
 
 $app->run();

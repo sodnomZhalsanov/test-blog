@@ -16,7 +16,7 @@ class CardController
         $this->cardRepos = $cardRepos;
     }
 
-    public function getCards(): array
+    public function getCards(int $categoryId): array
     {
         if(session_status() === PHP_SESSION_NONE){
             session_start();
@@ -28,11 +28,11 @@ class CardController
             header("Location: /signin");
         }
 
-        $cards = $this->cardRepos->getAllCards();
+        $cards = $this->cardRepos->getByCategory($categoryId);
 
 
         return [
-            "../View/catalog.phtml",
+            "../View/cards.phtml",
             [
 
                 'cards' => $cards,

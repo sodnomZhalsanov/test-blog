@@ -54,8 +54,21 @@ class CardRepository
         return $cards;
     }
 
-    public function getByCategory(int $id)
+    public function getByCategory(int $id): array
     {
+        $cards = [];
+        $query = $this->connection->prepare("select * from cards where category_id = :id");
+        $query->execute(['id' => $id]);
+        $result = $query->fetchAll();
+
+        foreach ($result as $elem) {
+            $card = new Card($elem['name'], $elem['price'], $elem['category_id'], $elem['image']);
+            $card->setId($elem['id']);
+
+            $cards[] = $card;
+        }
+
+        return $cards;
 
     }
 }

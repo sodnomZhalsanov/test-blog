@@ -3,7 +3,7 @@
 namespace App\Controller;
 use App\Repository\CategoryRepository;
 
-class CategoryContoller
+class CategoryController
 {
     private CategoryRepository $categoryRepos;
 
@@ -24,9 +24,8 @@ class CategoryContoller
             header("Location: /signin");
         }
         $greetings =  "Welcome, {$_SESSION['userName']}!";
-        $categories = [];
+        $categories = $this->categoryRepos->getAllCategories();
 
-        $this->categoryRepos->getAllCategories();
 
         return [
             "../View/catalog.phtml",

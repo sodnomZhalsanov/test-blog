@@ -10,6 +10,7 @@ class UserController
 
     private UserRepository $userRepos;
 
+
     public function __construct(UserRepository $userRepos)
     {
         $this->userRepos = $userRepos;

@@ -86,20 +86,21 @@ class App
 
         foreach ($this->routes[$method] as $pattern => $handler) {
 
-            if (preg_match("#^$pattern#", $uri, $params)) {
-                if (!empty($params)) {
-                    foreach ($params as $key => $value) {
-                        if ($key === 0 || intval($key)){
-                            unset($params[$key]);
-                        }
+            if (preg_match("#^$pattern$#", $uri, $params)) {
+                foreach ($params as $key => $value) {
+                    if ($key === 0 || intval($key)){
+                        unset($params[$key]);
                     }
-                    $params = array_values($params);
                 }
+
+
+                $params = array_values($params);
+
                 return [$handler, $params];
             }
         }
 
-        return [ \App\Controller\UserController:: class, 'getNotFound'];
+        return [[ \App\Controller\UserController:: class, 'getNotFound'],[]];
 
     }
 

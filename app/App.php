@@ -28,15 +28,20 @@ class App
 
         $handler = $this->route();
 
+        list($handler, $params) = $handler;
+
         if(is_array($handler)){
             list($obj, $method) = $handler;
+
             if(!is_object($obj)){
-
                     $obj = $this->container->get($obj);
-
-
             }
-            $response = $obj->$method();
+
+            if (empty($params)) {
+                $response = $obj->$method();
+            } else {
+                $response = $obj->$method(...$params);
+            }
 
         } else{
             $response = $handler();
@@ -82,7 +87,15 @@ class App
         foreach ($this->routes[$method] as $pattern => $handler) {
 
             if (preg_match("#^$pattern#", $uri, $params)) {
-                return $handler;
+                if (!empty($params)) {
+                    foreach ($params as $key => $value) {
+                        if ($key === 0 || intval($key)){
+                            unset($params[$key]);
+                        }
+                    }
+                    $params = array_values($params);
+                }
+                return [$handler, $params];
             }
         }
 
@@ -100,18 +113,6 @@ class App
 
     }
 
-    /*   private function doRouting(string $uri): string {
-       if(preg_match("#/(?<route>[A-Za-z0-9-_]+)#", $uri, $matches ) and
-           file_exists("./Controller/{$matches['route']}.php")) {
-
-           return "./Controller/{$matches['route']}.php";
-
-       }
-
-       return "./View/NotFound.phtml";
-
-   }
-*/
 
 
 }

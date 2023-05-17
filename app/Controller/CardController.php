@@ -16,7 +16,7 @@ class CardController
         $this->cardRepos = $cardRepos;
     }
 
-    public function getCatalog(): array
+    public function getCards(): array
     {
         if(session_status() === PHP_SESSION_NONE){
             session_start();
@@ -29,19 +29,18 @@ class CardController
         }
 
         $cards = $this->cardRepos->getAllCards();
-        $categories = $this->cardRepos->getAllCategories();
 
-        $greetings =  "Welcome, {$_SESSION['userName']}!";
+
         return [
             "../View/catalog.phtml",
             [
-                'userGreetings' => $greetings,
-                'cards' => $cards,
-                'categories' => $categories
 
+                'cards' => $cards,
             ]
         ];
     }
+
+
 
 
 

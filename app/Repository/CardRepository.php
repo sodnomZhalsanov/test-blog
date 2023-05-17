@@ -43,7 +43,6 @@ class CardRepository
         $result = $query->fetchAll();
 
 
-
         foreach ($result as $elem) {
             $card = new Card($elem['name'], $elem['price'], $elem['category'], $elem['image']);
             $card->setId($elem['id']);
@@ -52,36 +51,11 @@ class CardRepository
         }
 
 
-
         return $cards;
     }
-    public function getAllCategories(): array
-    {
-        $categories = [];
 
-        $query = $this->connection->query("select * from categories");
-        $result = $query->fetchAll();
-
-
-
-
-        foreach ($result as $elem) {
-            $category = new Category($elem['name']);
-            $category->setId($elem['id']);
-
-            $categories[] = $category;
-        }
-
-
-
-        return $categories;
-    }
-
-    public function getByCategory(string $name)
+    public function getByCategory(int $id)
     {
 
-
     }
-
-
 }

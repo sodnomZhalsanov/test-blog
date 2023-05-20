@@ -9,7 +9,7 @@ use App\Controller\CardController;
 use App\Repository\CardRepository;
 use App\Controller\CategoryController;
 use App\Repository\CategoryRepository;
-
+use App\Controller\BasketController;
 
 return [
     UserRepository::class => function (Container $container) {
@@ -40,6 +40,8 @@ return [
       $password = $settings['db']['password'];
 
       $pdo = new PDO("pgsql:host=$host;dbname=$database", $user, $password);
+
+
 
       return $pdo;
     },
@@ -72,6 +74,14 @@ return [
       $repos = $container->get(CategoryRepository::class);
 
       $obj = new CategoryController($repos);
+
+      return $obj;
+    },
+
+    BasketController::class => function (Container $container) {
+      $repos = $container->get(CardRepository::class);
+
+      $obj = new BasketController($repos);
 
       return $obj;
     }

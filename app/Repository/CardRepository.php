@@ -5,6 +5,7 @@ namespace App\Repository;
 use PDO;
 use App\Entity\Card;
 use App\Entity\Category;
+use App\Entity\Basket;
 
 class CardRepository
 {
@@ -69,6 +70,32 @@ class CardRepository
         }
 
         return $cards;
+
+    }
+
+    public function getByUser(int $userId): array
+    {
+        $cards = [];
+        $query = $this->connection->prepare(
+            "SELECT * FROM
+             cards c inner join basket_cards b_c on c.id = b_c.card_id
+             inner join  baskets b on b_c.basket_id = b.id
+             WHERE b.user_id = ?"
+        );
+        $query->execute([$userId]);
+        $result = $query->fetchAll();
+
+        foreach ($result as $elem) {
+            $card = new Card($elem['name'], $elem['price'], $elem['category_id'], $elem['image']);
+            $card->setId($elem['id']);
+
+            $cards[] = $card;
+
+        }
+
+        return $cards;
+
+
 
     }
 }

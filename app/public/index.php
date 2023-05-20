@@ -24,6 +24,7 @@ $app->post("/signup", [\App\Controller\UserController::class, 'signUp']);
 $app->post("/signin", [\App\Controller\UserController::class, 'signIn']);
 $app->get('/catalog', [\App\Controller\CategoryController::class, 'getCatalog']);
 $app->get('/catalog/\b(?<categoryId>[0-9])\b', [\App\Controller\CardController::class, 'getCards']);
+$app->get("/basket", [\App\Controller\BasketController::class, 'getCards']);
 
 
 $app->run();

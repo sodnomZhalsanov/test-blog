@@ -13,7 +13,7 @@ class BasketController
         $this->cardRepos = $cardRepos;
     }
 
-    public function getCards(int $categoryId): array
+    public function getCards(): array
     {
         if(session_status() === PHP_SESSION_NONE){
             session_start();

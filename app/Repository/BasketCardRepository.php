@@ -21,7 +21,7 @@ class BasketCardRepository
     {
         $query = $this->connection->prepare(
             "select * from basket_cards b_c
-                   inner join baskets b on b_c.busket_id = b.id
+                   inner join baskets b on b_c.basket_id = b.id
                    inner join cards c on b_c.card_id = c.id
                    inner join users u on b.user_id = u.id
                    where c.id = :cardId and u.id = :userId"
@@ -100,7 +100,7 @@ class BasketCardRepository
                            :cardId,
                            :basketId,
                            :quantity 
-                   ) ON CONFLICT (cart_id, product_id) DO UPDATE 
+                   ) ON CONFLICT (basket_id, card_id) DO UPDATE 
                    SET quantity = EXCLUDED.quantity
         ");
 

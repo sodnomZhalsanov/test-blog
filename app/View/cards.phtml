@@ -1,10 +1,12 @@
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <?php
+    use App\Entity\Card;
+    use App\Entity\Category;
 
     foreach ($cards as $card){
 
             ?>
-            <form action="/basket" method="post">
+            <form action="/add" method="post">
             <div class="col" style="margin-bottom: 30px">
                 <div class="card h-100">
                     <img src="<?php echo $card->getImage(); ?>" class="card-img-top" alt="...">
@@ -23,6 +25,8 @@
                         </p>
                     </div>
                 </div>
+                <input type="hidden" name="cardId" value=<?= $card->getId(); ?>>
+                <input type="hidden" name="categoryId" value="<?= $categoryId; ?>">
                 <button style="background-color: green;" class="btn product__btn" type="submit">Order</button>
             </div>
             </form>

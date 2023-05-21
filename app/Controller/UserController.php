@@ -3,17 +3,21 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use App\Entity\User;
+use App\Entity\Basket;
+use App\Repository\BasketRepository;
 
 
 class UserController
 {
 
     private UserRepository $userRepos;
+    private BasketRepository $basketRepos;
 
 
-    public function __construct(UserRepository $userRepos)
+    public function __construct(UserRepository $userRepos, BasketRepository $basketRepos)
     {
         $this->userRepos = $userRepos;
+        $this->basketRepos = $basketRepos;
     }
 
 
@@ -61,6 +65,9 @@ class UserController
                 if (!empty($user) and password_verify($_POST['pass'],$user->getPassword())){
                     $_SESSION['userId'] = $user->getId();
                     $_SESSION['userName'] = $user->getFirstname();
+
+                    $basket = new Basket($_SESSION['userId']);
+                    $this->basketRepos->save($basket);
 
                     header("Location: /catalog");
                 } else {

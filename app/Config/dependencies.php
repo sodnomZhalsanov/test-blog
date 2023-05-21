@@ -10,6 +10,8 @@ use App\Repository\CardRepository;
 use App\Controller\CategoryController;
 use App\Repository\CategoryRepository;
 use App\Controller\BasketController;
+use App\Repository\BasketRepository;
+use App\Repository\BasketCardRepository;
 
 return [
     UserRepository::class => function (Container $container) {
@@ -21,9 +23,10 @@ return [
     },
 
     UserController::class => function (Container $container) {
-      $repos = $container->get(UserRepository::class);
+      $userRepos = $container->get(UserRepository::class);
+      $basketRepos = $container->get(BasketRepository::class);
 
-      $obj = new UserController($repos);
+      $obj = new UserController($userRepos, $basketRepos);
 
       return $obj;
     },
@@ -79,11 +82,26 @@ return [
     },
 
     BasketController::class => function (Container $container) {
-      $repos = $container->get(CardRepository::class);
+      $cardRepos = $container->get(CardRepository::class);
+      $basketRepos = $container->get(BasketRepository::class);
+      $basketCardRepos = $container->get(BasketCardRepository::class);
+      $connection = $container->get('db');
 
-      $obj = new BasketController($repos);
+      $obj = new BasketController($cardRepos, $basketRepos, $basketCardRepos, $connection);
 
       return $obj;
+    },
+
+    BasketRepository::class => function (Container $container) {
+      $connection = $container->get('db');
+
+      return new BasketRepository($connection);
+    },
+
+    BasketCardRepository::class => function (Container $container) {
+      $connection = $container->get('db');
+
+      return new BasketCardRepository($connection);
     }
 
 

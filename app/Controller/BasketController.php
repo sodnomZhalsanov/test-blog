@@ -45,19 +45,19 @@ class BasketController
             header("Location: /signin");
         }
 
-        $cards = $this->cardRepos->getByUser($_SESSION['userId']);
+        $basketCards = $this->basketCardRepos->getByUser($_SESSION['userId']);
 
 
         return [
             "../View/basket.phtml",
             [
 
-                'cards' => $cards,
+                'basketCards' => $basketCards,
             ]
         ];
     }
 
-    public function AddToBasket(Card $card): void
+    public function addToBasket(): array
     {
         $categoryId = $_POST['categoryId'];
         $cardId = $_POST['cardId'];
@@ -73,7 +73,7 @@ class BasketController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $errorMessage = $this->validate($categoryId);
+            $errorMessage = $this->validate($cardId);
 
             if (empty($errorMessage)) {
 
@@ -81,33 +81,29 @@ class BasketController
                 $basketCard = $this->basketCardRepos->getOne($cardId, $userId);
                 $basket = $this->basketRepos->getByUser($userId);
 
-                $this->connection->beginTransaction();
-
-                try {
-                    if (empty($basket)) {
+                if (empty($basket)) {
                         $basket = new Basket($userId);
                         $this->basketRepos->save($basket);
-                    }
+                }
 
-                    if (empty($basketCard)) {
+                if (empty($basketCard)) {
                         $card = $this->cardRepos->getCardById($cardId);
                         $basketCard = new BasketCard($card, $basket, 0);
                     }
 
-                    $this->basketCardRepos->save($basketCard);
-
-                } catch (\Throwable) {
-                    $this->connection->rollBack();
-                }
-
-                $this->connection->commit();
+                $this->basketCardRepos->save($basketCard);
 
                 header("Location: /category/$categoryId");
 
             }
 
 
+
         }
+        return [
+            "../Views/category/$categoryId",
+            ['errorMessage' => $errorMessage]
+        ];
 
 
     }

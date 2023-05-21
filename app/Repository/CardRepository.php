@@ -26,7 +26,7 @@ class CardRepository
         if (!empty($result)) {
             $card = new Card(
                 $result['name'],
-                $result['category'],
+                $result['category_id'],
                 $result['price'],
                 $result['image']
             );

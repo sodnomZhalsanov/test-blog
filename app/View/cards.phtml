@@ -4,6 +4,7 @@
     foreach ($cards as $card){
 
             ?>
+            <form action="/basket" method="post">
             <div class="col" style="margin-bottom: 30px">
                 <div class="card h-100">
                     <img src="<?php echo $card->getImage(); ?>" class="card-img-top" alt="...">
@@ -22,8 +23,9 @@
                         </p>
                     </div>
                 </div>
-                <button style="background-color: green;" class="btn product__btn" type="button">Order</button>
+                <button style="background-color: green;" class="btn product__btn" type="submit">Order</button>
             </div>
+            </form>
         <?php } ?>
 
 </div>

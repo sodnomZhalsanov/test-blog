@@ -17,10 +17,10 @@ class CardRepository
 
     }
 
-    public function getCardById(array $data): Card|bool
+    public function getCardById(int $cardId): Card|null
     {
         $query = $this->connection->prepare("select * from cards where id = :id");
-        $query->execute(['id' => $data['id']]);
+        $query->execute(['id' => $cardId]);
         $result = $query->fetch();
 
         if (!empty($result)) {
@@ -30,11 +30,11 @@ class CardRepository
                 $result['price'],
                 $result['image']
             );
-            $card->setId($data['id']);
+            $card->setId($result['id']);
 
             return $card;
         }
-        return false;
+        return null;
     }
 
     public function getAllCards(): ?array

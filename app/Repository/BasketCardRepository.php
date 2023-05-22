@@ -44,7 +44,7 @@ class BasketCardRepository
 
             $basket = new Basket($data['user_id']);
 
-            $basket->setId($data['cart_id']);
+            $basket->setId($data['basket_id']);
 
             return New BasketCard($card, $basket, $data['quantity']);
         }
@@ -77,7 +77,7 @@ class BasketCardRepository
 
                 $basket = new Basket($elem['user_id']);
 
-                $basket->setId($elem['cart_id']);
+                $basket->setId($elem['basket_id']);
 
                 $basketCard = new BasketCard($card, $basket, $elem['quantity']);
 
@@ -100,8 +100,7 @@ class BasketCardRepository
                            :cardId,
                            :basketId,
                            :quantity 
-                   ) ON CONFLICT (basket_id, card_id) DO UPDATE 
-                   SET quantity = EXCLUDED.quantity
+                   ) 
         ");
 
         $result->execute([

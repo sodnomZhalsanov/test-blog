@@ -21,12 +21,13 @@
                             <?php
                             echo $card->getPrice()."$";
 
+
                             ?>
                         </p>
                     </div>
                 </div>
                 <input type="hidden" name="cardId" value=<?= $card->getId(); ?>>
-                <input type="hidden" name="categoryId" value="<?= $categoryId; ?>">
+                <input type="hidden" name="categoryId" value="<?= $card->getCategory(); ?>">
                 <button style="background-color: green;" class="btn product__btn" type="submit">Order</button>
             </div>
             </form>

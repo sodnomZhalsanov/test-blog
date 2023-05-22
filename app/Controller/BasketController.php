@@ -59,8 +59,8 @@ class BasketController
 
     public function addToBasket(): array
     {
-        $categoryId = $_POST['categoryId'];
         $cardId = $_POST['cardId'];
+        $categoryId = $_POST['categoryId'];
 
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -81,10 +81,6 @@ class BasketController
                 $basketCard = $this->basketCardRepos->getOne($cardId, $userId);
                 $basket = $this->basketRepos->getByUser($userId);
 
-                if (empty($basket)) {
-                        $basket = new Basket($userId);
-                        $this->basketRepos->save($basket);
-                }
 
                 if (empty($basketCard)) {
                         $card = $this->cardRepos->getCardById($cardId);
@@ -93,7 +89,8 @@ class BasketController
 
                 $this->basketCardRepos->save($basketCard);
 
-                header("Location: /category/$categoryId");
+
+                header("Location: /catalog/{$categoryId}");
 
             }
 
@@ -101,7 +98,7 @@ class BasketController
 
         }
         return [
-            "../Views/category/$categoryId",
+            "../Views/catalog/{$categoryId}",
             ['errorMessage' => $errorMessage]
         ];
 

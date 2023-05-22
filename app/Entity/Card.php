@@ -6,12 +6,12 @@ class Card
 {
     private int $id;
     private string $name;
-    private string $categoryId;
+    private int $categoryId;
     private float $price;
 
     private ?string $image;
 
-    public function __construct( $name, $price, $categoryId,$image)
+    public function __construct(string $name,string $price,int $categoryId,?string $image)
     {
 
         $this->name = $name;
@@ -34,19 +34,19 @@ class Card
         return $this->name;
     }
 
-    public function setName(int $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getCategory(): string
+    public function getCategory(): int
     {
-        return $this->category_id;
+        return $this->categoryId;
     }
 
-    public function setCategory(int $category_id): void
+    public function setCategory(int $categoryId): void
     {
-        $this->category_id = $category_id;
+        $this->categoryId = $categoryId;
     }
 
     public function getPrice(): float
@@ -54,7 +54,7 @@ class Card
         return $this->price;
     }
 
-    public function setPrice(int $price): void
+    public function setPrice(float $price): void
     {
         $this->price = $price;
     }

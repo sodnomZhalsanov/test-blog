@@ -5,6 +5,7 @@ use App\Repository\UserRepository;
 use App\Entity\User;
 use App\Entity\Basket;
 use App\Repository\BasketRepository;
+use App\ViewRenderer;
 
 
 class UserController
@@ -12,17 +13,24 @@ class UserController
 
     private UserRepository $userRepos;
     private BasketRepository $basketRepos;
+    private  ViewRenderer $renderer;
 
 
-    public function __construct(UserRepository $userRepos, BasketRepository $basketRepos)
+    public function __construct(
+        UserRepository $userRepos,
+        BasketRepository $basketRepos,
+        ViewRenderer $renderer
+    )
     {
         $this->userRepos = $userRepos;
         $this->basketRepos = $basketRepos;
+        $this->renderer = $renderer;
     }
 
 
 
-    public function signUp(): array {
+    public function signUp(): ?string
+    {
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,17 +47,18 @@ class UserController
 
 
 
-        return [
-            "../View/forms/signup.phtml",
-            [
-                'errors' => $errors
-            ]
-        ];
+        return $this->renderer->render(
+            '../View/forms/signup.phtml',
+            ['errors' => $errors]
+        );
 
     }
 
-    public function signIn(): array {
-        session_start();
+    public function signIn(): ?string
+    {
+        if(session_status() === PHP_SESSION_NONE){
+            session_start();
+        }
         $errors = [];
 
 
@@ -66,8 +75,6 @@ class UserController
                     $_SESSION['userId'] = $user->getId();
                     $_SESSION['userName'] = $user->getFirstname();
 
-                    $basket = new Basket($_SESSION['userId']);
-                    $this->basketRepos->save($basket);
 
                     header("Location: /catalog");
                 } else {
@@ -78,39 +85,19 @@ class UserController
             }
         }
 
-        return [
+        return $this->renderer->render(
             '../View/forms/signin.phtml',
-            [
-                'errors' => $errors,
-            ]
-        ];
+            ['errors' => $errors]
+        );
     }
 
-    public function getMain(): array {
-        session_start();
-        if (!isset($_SESSION['userId'])) {
 
-            header("Location: /signin");
-        }
-
-        $greetings =  "Welcome, {$_SESSION['userName']}!";
-        return [
-            "../View/main.phtml",
-            [
-                'userGreetings' => $greetings
-            ]
-        ];
-
-    }
-
-    public function getNotFound(): array {
-        return [
-            "../View/NotFound.phtml",
-            [
-
-            ]
-
-        ];
+    public function getNotFound(): ?string
+    {
+        return $this->renderer->render(
+            '../View/NotFound.phtml',
+            []
+        );
     }
 
     private function validateUser(array $data): array {

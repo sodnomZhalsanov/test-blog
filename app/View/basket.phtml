@@ -1,6 +1,6 @@
 <div>
 
-
+    <form action="" method="POST">
     <?php foreach ($basketCards as $card): ?>
         <div class = 'container-fluid'>
 
@@ -9,10 +9,11 @@
                 <th><img src="<?= $card->getCard()->getImage(); ?>" alt=""></th>
                 <th><?= $card->getCard()->getName(); ?></th>
                 <td>$ <?= $card->getCard()->getPrice(); ?></td>
-                <td><?= $card->getQuantity(); ?></td>
+                <td>quantity: <?= $card->getQuantity() ; ?></td>
             </tr>
         </table>
         </div>
 
     <?php endforeach; ?>
+    </form>
 </div>

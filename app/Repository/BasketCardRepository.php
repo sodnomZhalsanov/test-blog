@@ -63,7 +63,8 @@ class BasketCardRepository
         $result->execute([$userId]);
         $data = $result->fetchAll();
 
-        $products = [];
+        $cards= [];
+
         if ($data) {
             foreach ($data as $elem) {
                 $card = new Card(
@@ -81,11 +82,11 @@ class BasketCardRepository
 
                 $basketCard = new BasketCard($card, $basket, $elem['quantity']);
 
-                $products[] = $basketCard;
+                $cards[] = $basketCard;
             }
         }
 
-        return $products;
+        return $cards;
     }
 
 
@@ -100,7 +101,8 @@ class BasketCardRepository
                            :cardId,
                            :basketId,
                            :quantity 
-                   ) 
+                   ) ON CONFLICT (card_id, basket_id) DO UPDATE 
+                   SET quantity = EXCLUDED.quantity
         ");
 
         $result->execute([

@@ -12,6 +12,8 @@ use App\Repository\CategoryRepository;
 use App\Controller\BasketController;
 use App\Repository\BasketRepository;
 use App\Repository\BasketCardRepository;
+use App\Service\BasketService;
+use App\ViewRenderer;
 
 return [
     UserRepository::class => function (Container $container) {
@@ -25,8 +27,9 @@ return [
     UserController::class => function (Container $container) {
       $userRepos = $container->get(UserRepository::class);
       $basketRepos = $container->get(BasketRepository::class);
+      $renderer = $container->get(ViewRenderer::class);
 
-      $obj = new UserController($userRepos, $basketRepos);
+      $obj = new UserController($userRepos, $basketRepos, $renderer);
 
       return $obj;
     },
@@ -59,8 +62,9 @@ return [
 
     CardController::class => function (Container $container) {
       $repos = $container->get(CardRepository::class);
+      $renderer = $container->get(ViewRenderer::class);
 
-      $obj = new CardController($repos);
+      $obj = new CardController($repos, $renderer);
 
       return $obj;
     },
@@ -75,8 +79,9 @@ return [
 
     CategoryController::class => function (Container $container) {
       $repos = $container->get(CategoryRepository::class);
+      $renderer = $container->get(ViewRenderer::class);
 
-      $obj = new CategoryController($repos);
+      $obj = new CategoryController($repos, $renderer);
 
       return $obj;
     },
@@ -86,8 +91,11 @@ return [
       $basketRepos = $container->get(BasketRepository::class);
       $basketCardRepos = $container->get(BasketCardRepository::class);
       $connection = $container->get('db');
+      $basketService = $container->get(BasketService::class);
+      $renderer = $container->get(ViewRenderer::class);
 
-      $obj = new BasketController($cardRepos, $basketRepos, $basketCardRepos, $connection);
+
+      $obj = new BasketController($cardRepos, $basketRepos,$basketService,$renderer, $basketCardRepos, $connection);
 
       return $obj;
     },
@@ -102,6 +110,14 @@ return [
       $connection = $container->get('db');
 
       return new BasketCardRepository($connection);
+    },
+
+    BasketService::class => function (Container $container) {
+    $connection = $container->get('db');
+    $basketRepos = $container->get(BasketRepository::class);
+    $basketCardRepos = $container->get(BasketCardRepository::class);
+
+    return new BasketService($connection, $basketRepos, $basketCardRepos);
     }
 
 

@@ -34,30 +34,19 @@ class Card
         return $this->name;
     }
 
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
 
     public function getCategory(): int
     {
         return $this->categoryId;
     }
 
-    public function setCategory(int $categoryId): void
-    {
-        $this->categoryId = $categoryId;
-    }
+
 
     public function getPrice(): float
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): void
-    {
-        $this->price = $price;
-    }
 
     public function getImage(): ?string
     {

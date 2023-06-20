@@ -1,0 +1,1 @@
+Unsuccessful query processing. App\Repository\BasketCardRepository::getByUser(): Argument #1 ($userId) must be of type int, null given, called in /var/www/html/app/Controller/BasketController.php on line 57 in /var/www/html/app/Repository/BasketCardRepository.php on 54 line.

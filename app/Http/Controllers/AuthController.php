@@ -28,9 +28,11 @@ class AuthController extends Controller
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
-            'login' => $request->email,
+            'login' => $request->login,
             'password' => Hash::make($request->password),
         ]);
+
+        //$token = Auth::login($user);
 
 
         return response()->json([
@@ -45,9 +47,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(LoginRequest $request)
+    public function login()
     {
-        $credentials = $request->only('login', 'password');
+        $credentials = request(['login', 'password']);
+
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -100,7 +103,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => 3600
         ]);
     }
 }

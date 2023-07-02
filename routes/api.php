@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserDataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,11 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
 
 Route::group([
 
@@ -32,7 +28,6 @@ Route::group([
     Route::post('login', [AuthController::class,'login']);
     Route::post('logout', [AuthController::class,'logout']);
     Route::post('refresh', [AuthController::class,'refresh']);
-    Route::post('me', [AuthController::class,'me']);
     Route::post('register', [AuthController::class,'register']);
 
 
@@ -44,11 +39,24 @@ Route::group([
     'middleware' => 'jwt.auth'
 
 ], function () {
-    Route::get('posts', [UserController::class, 'showPosts']);
-    Route::get('posts/{id}', [UserController::class, 'showPost']);
-    Route::post('create-post', [UserController::class, 'createPost']);
-    Route::post('create-category', [UserController::class, 'createCategory']);
-    Route::post('update-post/{id}', [UserController::class, 'updatePost']);
-    Route::get('delete-post/{id}', [UserController::class, 'deletePost']);
-    Route::get('posts/{id}/comment', [UserController::class, 'comment']);
+    Route::get('posts', [PostController::class, 'showPosts']);
+    Route::get('posts/{id}', [PostController::class, 'showPost']);
+    Route::post('posts/create-post', [PostController::class, 'createPost']);
+    Route::post('posts/create-category', [PostController::class, 'createCategory']);
+    Route::put('posts/{id}', [PostController::class, 'updatePost']);
+    Route::delete('posts/{id}', [PostController::class, 'deletePost']);
+    Route::get('posts/{id}/like', [PostController::class, 'like']);
+    Route::post('posts/{id}/comment', [PostController::class, 'comment']);
+});
+
+Route::group([
+
+    'namespace' => 'User',
+    'middleware' => 'jwt.auth'
+
+], function () {
+    Route::get('user', [UserDataController::class, 'showUserData']);
+    Route::put('user', [UserDataController::class, 'editUserData']);
+    Route::get('user/liked', [UserDataController::class, 'showLikedPosts']);
+    Route::get('user/commented', [UserDataController::class, 'showCommentedPosts']);
 });

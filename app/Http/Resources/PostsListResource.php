@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Category;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class PostsListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +16,12 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
-            'login' => $this->login
+            'id' => $this->id,
+            'title' => $this->title,
+            'text' => substr($this->text, 0, 100),
+            'category' => Category::find($this->category_id)->title,
+            'comments_count' => $this->comments->count(),
+            'likes_count' => $this->likes->count()
         ];
     }
 }

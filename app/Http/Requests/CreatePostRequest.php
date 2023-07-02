@@ -26,9 +26,9 @@ class CreatePostRequest extends FormRequest
         return [
             //
             'title' => 'required|string|min:6',
-            'text' => 'required|string|min:150',
-            'category_id' => 'required|integer|',
-            'user_id' => 'required|integer|'
+            'text' => 'required|string|min:10',
+            'category_id' => 'required',
+            'user_id' => 'required'
         ];
     }
 }

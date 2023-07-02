@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,4 +36,19 @@ Route::group([
     Route::post('register', [AuthController::class,'register']);
 
 
+});
+
+Route::group([
+
+    'namespace' => 'Post',
+    'middleware' => 'jwt.auth'
+
+], function () {
+    Route::get('posts', [UserController::class, 'showPosts']);
+    Route::get('posts/{id}', [UserController::class, 'showPost']);
+    Route::post('create-post', [UserController::class, 'createPost']);
+    Route::post('create-category', [UserController::class, 'createCategory']);
+    Route::post('update-post/{id}', [UserController::class, 'updatePost']);
+    Route::get('delete-post/{id}', [UserController::class, 'deletePost']);
+    Route::get('posts/{id}/comment', [UserController::class, 'comment']);
 });

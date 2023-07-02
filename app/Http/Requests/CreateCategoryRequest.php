@@ -26,7 +26,7 @@ class CreateCategoryRequest extends FormRequest
         return [
             //
             'title' => 'required|string',
-            'user_id' => 'required|integer'
+            'user_id' => 'required'
         ];
     }
 }

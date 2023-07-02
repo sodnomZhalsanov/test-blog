@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -32,13 +33,10 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        //$token = Auth::login($user);
-
-
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
-            'user' => $user,
+            'user' => new UserResource($user),
         ]);
     }
 

@@ -6,6 +6,7 @@ use App\Http\Requests\CommentRequest;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\PostsListResource;
@@ -32,11 +33,7 @@ class PostController extends Controller
     {
         $category = Category::create(['title' => $request->title, 'user_id' => $request->user_id]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Category created successfully',
-            'category' => $category,
-        ]);
+        return new CategoryResource($category);
     }
 
     public function createPost(CreatePostRequest $request)
@@ -51,7 +48,7 @@ class PostController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Post created successfully',
-            'post' => $post,
+            'post' => new PostResource($post),
         ]);
 
     }
@@ -70,12 +67,7 @@ class PostController extends Controller
         $post = Post::find($id);
         $post->update(['title' => $request->title, 'text' => $request->text, 'category_id' => $request->category_id]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Post updated successfully',
-            'post' => $post,
-        ]);
-
+        return new PostResource($post);
 
     }
 

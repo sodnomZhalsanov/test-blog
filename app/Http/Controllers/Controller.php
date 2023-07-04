@@ -16,14 +16,20 @@ use Illuminate\Routing\Controller as BaseController;
  *      )
  *
  * )
- * @OA\Tag(
- *     name = "Auth",
- *     description = "Auth description",
- * )
+
  * @OA\Server(
  *     description="Laravel Swagger API Server",
- *     url="http://localhost:82/api"
+ *     url="http://localhost/api"
  * )
+ *
+ *  @OA\SecurityScheme(
+ *       securityScheme="bearerAuth",
+ *       in="header",
+ *       name="bearerAuth",
+ *       type="http",
+ *       scheme="bearer",
+ *       bearerFormat="JWT",
+ *    ),
  *
  *
 

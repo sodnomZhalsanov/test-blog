@@ -27,7 +27,7 @@ class CreatePostRequest extends FormRequest
             //
             'title' => 'required|string|min:6',
             'text' => 'required|string|min:150',
-            'category_id' => 'required'
+            'category_id' => 'required|exists:categories,id'
         ];
     }
 }

@@ -18,10 +18,10 @@ class UserLikeRule implements InvokableRule
      */
     public function __invoke($attribute, $value, $fail)
     {
-        $user_id = Auth::id();
+        $userId = Auth::id();
         $post = Post::find($value);
 
-        if($post->user_id === $user_id){
+        if($post->user_id === $userId){
             $fail('You can not like or dislike your posts');
         }
     }

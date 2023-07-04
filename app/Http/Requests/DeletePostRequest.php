@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class CreateCategoryRequest extends FormRequest
+class DeletePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +15,10 @@ class CreateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+
+        $post = Post::find($this->route('id'));
+
+        return $post && (Auth::id() === $post->user_id);
     }
 
     /**
@@ -25,7 +30,6 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             //
-            'title' => 'required|string'
         ];
     }
 }

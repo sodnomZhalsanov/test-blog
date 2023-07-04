@@ -11,6 +11,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @OA\Schema(
+ *     schema="User",
+ *     required={"id", "firstname","lastname", "login", "password"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="firstname", type="string", example="Lohn"),
+ *     @OA\Property(property="lastname", type="string", example="Forn"),
+ *     @OA\Property(property="login", type="string", example="ddfgfflogin@mail.ru"),
+ *     @OA\Property(property="password", type="string", example="audi5566"),
+ *
+ * )
+ */
 
 class AuthController extends Controller
 {
@@ -24,6 +36,40 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/auth/register",
+     *     summary="create a user",
+     *     description="create a new user",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="firstname", type="string", example="Lohn"),
+     *             @OA\Property(property="lastname", type="string", example="Forn"),
+     *             @OA\Property(property="login", type="string", example="ddfgfflogin@mail.ru"),
+     *             @OA\Property(property="password", type="string", example="audi5566")
+     *
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 ref="#/components/schemas/Post"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error"
+     *     )
+     * )
+     */
+
     public function register(RegisterRequest $request){
 
         $user = User::create([
@@ -33,17 +79,46 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => new UserResource($user),
-        ]);
+        return new UserResource($user);
     }
 
     /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
+     */
+
+    /**
+     * @OA\Post(
+     *     path="/auth/login",
+     *     summary="login a user",
+     *     description="login a user",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="login", type="string", example="ddfgfflogin@mail.ru"),
+     *             @OA\Property(property="password", type="string", example="audi5566")
+     *
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="access_token",
+     *                 property="token_type",
+     *                 property="expires_in"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error"
+     *     )
+     * )
      */
     public function login()
     {

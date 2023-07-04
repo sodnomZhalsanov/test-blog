@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\PostExists;
+use App\Rules\UserLikeRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCategoryRequest extends FormRequest
+class LikeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +26,9 @@ class CreateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-            'title' => 'required|string'
+            'post_id' => ['bail','required', 'exists:posts,id', new UserLikeRule]
         ];
     }
+
+
 }

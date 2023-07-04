@@ -25,7 +25,6 @@ class CommentRequest extends FormRequest
     {
         return [
             "text" => "required|string|min:10",
-            'user_id' => "required"
         ];
     }
 }

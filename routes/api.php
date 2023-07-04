@@ -47,7 +47,7 @@ Route::group([
     'namespace' => 'Category',
     'middleware' => 'jwt.auth'
 ], function () {
-    Route::get('category', [CategoryController::class, 'createCategory']);
+    Route::post('category', [CategoryController::class, 'createCategory']);
 });
 
 Route::group([

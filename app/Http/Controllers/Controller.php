@@ -13,26 +13,22 @@ use Illuminate\Routing\Controller as BaseController;
  *      version="1.0.0",
  *      @OA\Contact(
  *          email="admin@example.com"
- *      )
- *
+ *      ),
+ *     @OA\License(
+ *         name="Apache 2.0",
+ *         url="https://www.apache.org/licenses/LICENSE-2.0.html"
+ *     )
  * )
-
  * @OA\Server(
  *     description="Laravel Swagger API Server",
- *     url="http://localhost/api"
- * )
- *
- *  @OA\SecurityScheme(
+ *     url="http://localhost/api")
+ * @OA\SecurityScheme(
  *       securityScheme="bearerAuth",
  *       in="header",
  *       name="bearerAuth",
  *       type="http",
  *       scheme="bearer",
- *       bearerFormat="JWT",
- *    ),
- *
- *
-
+ *       bearerFormat="JWT")
  */
 class Controller extends BaseController
 {

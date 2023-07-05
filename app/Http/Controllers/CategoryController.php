@@ -9,13 +9,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
-/* @OA\Schema(
+/**
+ * @OA\Schema(
  *     schema="Category",
- *     required={"id", "title", "user_id"},
- *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="user_id", type="integer", example=1),
- *     @OA\Property(property="title", type="string", example="fffd")
- *
+ *     required={"title", "user_id"},
+ *     @OA\Property(property="title", type="string", example="having fun"),
+ *     @OA\Property(property="user_id", type="integer", example=1)
  * )
  */
 class CategoryController extends Controller
@@ -24,17 +23,16 @@ class CategoryController extends Controller
     {
         $this->middleware('auth:api');
     }
-
-    /* @OA\Post(
+    /**
+     * @OA\Post(
      *     path="/category",
-     *     summary="create a category",
-     *     description="create a new category by user",
+     *     summary="Create a category",
+     *     description="Create a new category",
      *     tags={"Category"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="title", type="string", example="dregory")
-     *
+     *             @OA\Property(property="title", type="string", example="having fun")
      *         )
      *     ),
      *     @OA\Response(
@@ -51,11 +49,17 @@ class CategoryController extends Controller
      *     @OA\Response(
      *         response=422,
      *         description="Validation error"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="not found"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="unauthorized"
      *     )
      * )
      */
-
-
     public function createCategory(CreateCategoryRequest $request)
     {
         $category = Category::create(['title' => $request->title, 'user_id' => Auth::id()]);

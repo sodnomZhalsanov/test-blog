@@ -18,6 +18,151 @@
         }
     ],
     "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Create a user",
+                "description": "Create a new user",
+                "operationId": "ed42f392010c301892e640067141676e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "firstname": {
+                                        "type": "string",
+                                        "example": "Saul"
+                                    },
+                                    "lastname": {
+                                        "type": "string",
+                                        "example": "Goodman"
+                                    },
+                                    "login": {
+                                        "type": "string",
+                                        "example": "JMM@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "jgdmcslddkris22"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserAuth"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Log in a user",
+                "description": "Log in a user",
+                "operationId": "8cb7742ae98d0990acb2907c4e00bf24",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "login": {
+                                        "type": "string",
+                                        "example": "JMM@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "jgdmcslddkris22"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "ewccxlv..."
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "string",
+                                            "example": 3600
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Log out a user",
+                "description": "Log out a user, invalidate token",
+                "operationId": "0d29c740dc06d77602af8095bf4654cc",
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully logged out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/category": {
             "post": {
                 "tags": [
@@ -496,10 +641,230 @@
                     }
                 }
             }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Show user",
+                "description": "Show user",
+                "operationId": "9eeadb345322a9a5e6376e4019e3f3d5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "firstname": {
+                                        "type": "string",
+                                        "example": "Barry"
+                                    },
+                                    "lastname": {
+                                        "type": "string",
+                                        "example": "Berkman"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "asflkc42212"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update a user",
+                "description": "Update a user",
+                "operationId": "3f3f92809b94d65d5239eb23fb45e047",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "firstname": {
+                                        "type": "string",
+                                        "example": "Barry"
+                                    },
+                                    "lastname": {
+                                        "type": "string",
+                                        "example": "Berkman"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "asflkc42212"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/likes": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Show liked posts",
+                "description": "List of user`s likes",
+                "operationId": "cf2d4b8c65ee2ecca40fc56b9167e880",
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "List of liked posts",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/UserLike"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/comments": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Show commented posts",
+                "description": "List of user comments",
+                "operationId": "6ad0c06286abcdf936454cf9d4b19da9",
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "List of commented posts",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/UserComment"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "not found"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "UserAuth": {
+                "required": [
+                    "firstname",
+                    "lastname",
+                    "login"
+                ],
+                "properties": {
+                    "firstname": {
+                        "type": "string",
+                        "example": "Barry"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "example": "Berkman"
+                    },
+                    "login": {
+                        "type": "string",
+                        "example": "bberkman@gmail.com"
+                    }
+                },
+                "type": "object"
+            },
             "Category": {
                 "required": [
                     "title",
@@ -622,6 +987,76 @@
                 "type": "object"
             },
             "Like": {
+                "required": [
+                    "user_id",
+                    "post"
+                ],
+                "properties": {
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "post": {
+                        "$ref": "#/components/schemas/PostList"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "required": [
+                    "firstname",
+                    "lastname",
+                    "login"
+                ],
+                "properties": {
+                    "firstname": {
+                        "type": "string",
+                        "example": "Barry"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "example": "Berkman"
+                    },
+                    "login": {
+                        "type": "string",
+                        "example": "bberkman@gmail.com"
+                    }
+                },
+                "type": "object"
+            },
+            "UserComment": {
+                "required": [
+                    "id",
+                    "text",
+                    "user_firstname",
+                    "user_lastname",
+                    "link"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "text": {
+                        "type": "string",
+                        "example": "That`s awesome"
+                    },
+                    "user_firstname": {
+                        "type": "string",
+                        "example": "Walter"
+                    },
+                    "user_lastname": {
+                        "type": "string",
+                        "example": "White"
+                    },
+                    "link": {
+                        "type": "string",
+                        "example": "http://localhost/api/posts/1"
+                    }
+                },
+                "type": "object"
+            },
+            "UserLike": {
                 "required": [
                     "user_id",
                     "post"

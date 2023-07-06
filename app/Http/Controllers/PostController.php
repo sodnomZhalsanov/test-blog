@@ -74,6 +74,7 @@ class PostController extends Controller
      *     summary="show posts",
      *     description="Display a listing of posts.",
      *     tags={"Post"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=201,
      *         description="Successful operation",
@@ -109,6 +110,7 @@ class PostController extends Controller
      *     summary="Create a post",
      *     description="Create a new post",
      *     tags={"Post"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -160,6 +162,7 @@ class PostController extends Controller
      *     summary="show post",
      *     description="Display a chosen post.",
      *     tags={"Post"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -207,6 +210,7 @@ class PostController extends Controller
      *     summary="Update a post",
      *     description="Update a post",
      *     tags={"Post"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -267,6 +271,7 @@ class PostController extends Controller
      *     summary="Delete a post",
      *     description="Delete a post",
      *     tags={"Post"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -308,6 +313,7 @@ class PostController extends Controller
      *     summary="comment a post",
      *     description="comment a post",
      *     tags={"Post"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -368,6 +374,7 @@ class PostController extends Controller
      *     summary="like a post",
      *     description="like a post",
      *     tags={"Post"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -433,6 +440,7 @@ class PostController extends Controller
      *     summary="dislike a post",
      *     description="dislike a post",
      *     tags={"Post"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

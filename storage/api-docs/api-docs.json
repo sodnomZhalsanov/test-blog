@@ -120,7 +120,7 @@
                                             "example": "bearer"
                                         },
                                         "expires_in": {
-                                            "type": "string",
+                                            "type": "integer",
                                             "example": 3600
                                         }
                                     },
@@ -249,7 +249,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [

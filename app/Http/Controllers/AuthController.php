@@ -99,7 +99,7 @@ class AuthController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="access_token", type="string", example="ewccxlv..."),
      *             @OA\Property(property="token_type", type="string", example="bearer"),
-     *             @OA\Property(property="expires_in", type="string", example=3600)
+     *             @OA\Property(property="expires_in", type="integer", example=3600)
      *         )
      *     ),
      *     @OA\Response(
@@ -127,6 +127,7 @@ class AuthController extends Controller
      *     summary="Log out a user",
      *     description="Log out a user, invalidate token",
      *     tags={"Auth"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=201,
      *         description="Successful operation",

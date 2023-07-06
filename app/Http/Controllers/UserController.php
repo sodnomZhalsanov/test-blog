@@ -48,6 +48,7 @@ class UserController extends Controller
      *     summary="Update a user",
      *     description="Update a user",
      *     tags={"User"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -101,6 +102,7 @@ class UserController extends Controller
      *     summary="Show user",
      *     description="Show user",
      *     tags={"User"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -145,6 +147,7 @@ class UserController extends Controller
      *     summary="Show liked posts",
      *     description="List of user`s likes",
      *     tags={"User"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=201,
      *         description="Successful operation",
@@ -186,6 +189,7 @@ class UserController extends Controller
      *     summary="Show commented posts",
      *     description="List of user comments",
      *     tags={"User"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=201,
      *         description="Successful operation",

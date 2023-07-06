@@ -160,7 +160,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/category": {
@@ -212,7 +217,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/posts": {
@@ -312,7 +322,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/posts/{id}": {
@@ -358,7 +373,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -429,7 +449,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -464,7 +489,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/posts/{id}/comment": {
@@ -529,7 +559,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/posts/{id}/like": {
@@ -594,7 +629,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/posts/{id}/dislike": {
@@ -644,7 +684,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/user": {
@@ -704,7 +749,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -762,7 +812,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/likes": {
@@ -802,7 +857,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/comments": {
@@ -842,7 +902,12 @@
                     "401": {
                         "description": "unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

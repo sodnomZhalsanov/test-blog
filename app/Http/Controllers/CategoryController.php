@@ -29,6 +29,7 @@ class CategoryController extends Controller
      *     summary="Create a category",
      *     description="Create a new category",
      *     tags={"Category"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
